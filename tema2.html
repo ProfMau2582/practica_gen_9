@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tema 2 · Prácticas Noveno</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --bg:#f6f5f2; --card:#ffffff; --ink:#1f2328; --muted:#5f6670; --line:#d8d6cf;
+  --accent:#185FA5; --accent-soft:#e6f0fa;
+  --ok:#0F6E56; --ok-soft:#e3f4ee; --bad:#b3261e; --bad-soft:#fbe9e7;
+  --warn:#8a5200; --warn-soft:#fff3d6; --fig:#1f2328; --fig-accent:#D4621A;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#16181b; --card:#1f2226; --ink:#e8e6e1; --muted:#a3a8ae; --line:#373b41;
+    --accent:#6ea8e6; --accent-soft:#1d2a38;
+    --ok:#5fc9a6; --ok-soft:#163029; --bad:#f08a80; --bad-soft:#3a1f1d;
+    --warn:#e8b45a; --warn-soft:#382c15; --fig:#e8e6e1; --fig-accent:#f0955a;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Century Gothic","Avenir Next","Segoe UI",system-ui,sans-serif;line-height:1.55}
+a{color:var(--accent)}
+.wrap{max-width:840px;margin:0 auto;padding:24px 16px 90px}
+header.top{border-bottom:3px solid var(--accent);padding-bottom:14px;margin-bottom:22px}
+.school{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{margin:.2em 0 .1em;font-size:1.65rem;line-height:1.25}
+.sub{color:var(--muted);margin:0}
+.back{display:inline-block;margin-bottom:10px;font-size:.92rem;text-decoration:none}
+.intro{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:22px}
+.intro ul{margin:.4em 0 0;padding-left:1.2em}
+.ref{background:var(--accent-soft);border-radius:10px;padding:12px 16px;margin:12px 0 0;font-size:.93rem;overflow-x:auto}
+.name{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.name input{flex:1;min-width:200px}
+input[type=text],select{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+h2{font-size:1.12rem;margin:34px 0 12px;padding-left:10px;border-left:5px solid var(--accent)}
+.q{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.q.ok{border-color:var(--ok)} .q.bad{border-color:var(--bad)}
+.qhead{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.qnum{font-weight:700;color:var(--accent);white-space:nowrap}
+.tag{font-size:.75rem;color:var(--muted);white-space:nowrap}
+.stem{margin:.3em 0 .6em}
+.fig{display:flex;justify-content:center;margin:6px 0 10px}
+.fig svg{max-width:100%;height:auto}
+.opts{display:grid;gap:8px;margin:8px 0}
+.opt{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;background:var(--bg)}
+.opt:hover{border-color:var(--accent)}
+.opt input{accent-color:var(--accent)}
+.opt.sel-ok{background:var(--ok-soft);border-color:var(--ok)}
+.opt.sel-bad{background:var(--bad-soft);border-color:var(--bad)}
+.numrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:8px 0}
+.numrow input.n{width:150px}
+.numrow input.e{flex:1;min-width:220px;font-family:ui-monospace,Consolas,monospace}
+.unit{color:var(--muted)}
+.preview{min-height:2.2em;padding:4px 10px;border-left:3px solid var(--line);color:var(--muted);margin:4px 0;font-size:1.05rem;overflow-x:auto}
+.preview.ok{border-left-color:var(--accent);color:var(--ink)}
+.howto{font-size:.82rem;color:var(--muted)}
+.match{width:100%;border-collapse:collapse;margin:8px 0}
+.match td{padding:6px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+.match td.mk{width:2em;font-weight:700}
+.match tr.ok td.mk{color:var(--ok)} .match tr.bad td.mk{color:var(--bad)}
+.optlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px 14px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:8px 0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+button{font:inherit;cursor:pointer;border-radius:8px;padding:7px 14px;border:1px solid var(--accent);background:var(--accent);color:#fff}
+button.ghost{background:transparent;color:var(--accent)}
+button:disabled{opacity:.45;cursor:default}
+.fb{margin-top:10px;padding:10px 12px;border-radius:8px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--ok-soft);color:var(--ok)}
+.fb.bad{background:var(--bad-soft);color:var(--bad)}
+.fb.warn{background:var(--warn-soft);color:var(--warn)}
+.fb .t{color:var(--ink)}
+.sol{margin-top:10px;padding:10px 12px;border-radius:8px;border:1px dashed var(--line);display:none;font-size:.96rem}
+.sol.show{display:block}
+.summary{position:sticky;bottom:0;background:var(--card);border-top:2px solid var(--accent);padding:12px 16px;margin:30px -16px 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.score{font-weight:700}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;flex:1;min-width:120px}
+.bar div{height:100%;background:var(--ok);width:0;transition:width .3s}
+.report{display:none;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-top:18px}
+.report.show{display:block}
+.report table{width:100%;border-collapse:collapse;font-size:.92rem}
+.report th,.report td{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left}
+/* menú */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.card{display:block;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;transition:border-color .15s, transform .15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card .n{font-size:.78rem;color:var(--accent);font-weight:700;letter-spacing:.08em}
+.card h3{margin:.25em 0 .35em;font-size:1.05rem}
+.card p{margin:0;color:var(--muted);font-size:.9rem}
+.card .count{margin-top:10px;font-size:.8rem;color:var(--muted)}
+@media print{.summary,.actions,button,.back{display:none!important}.sol{display:block!important}}
+
+.banner{background:linear-gradient(120deg,#0F766E,#2BB3A3);color:#fff;border-radius:14px;padding:20px 22px;margin-bottom:22px;position:relative;overflow:hidden}
+.banner .school{color:rgba(255,255,255,.85)}
+.banner h1{color:#fff}
+.banner .sub{color:rgba(255,255,255,.92)}
+.banner .badge{display:inline-block;background:rgba(255,255,255,.2);border-radius:999px;padding:2px 12px;font-size:.78rem;font-weight:700;letter-spacing:.06em;margin-bottom:6px}
+.banner svg.deco{position:absolute;right:-10px;top:-10px;opacity:.18;width:190px;height:190px}
+h2{border-left-color:#0F766E}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Volver al menú de temas</a>
+  <header class="banner">
+    <svg class="deco" viewBox="0 0 100 100" aria-hidden="true"><text x="10" y="45" font-size="40" fill="#fff">△</text><text x="40" y="90" font-size="36" fill="#fff">c²</text></svg>
+    <div class="badge">TEMA 2 · TRIGONOMETRÍA</div>
+    <div class="school">Vista Atenas High School · Prof. Mauricio Torres Artavia · Noveno</div>
+    <h1 id="titulo">Cargando…</h1>
+    <p class="sub" id="subtitulo"></p>
+  </header>
+  <section class="intro">
+    <strong>Instrucciones</strong>
+    <ul id="instr">
+      <li>Resuelva cada ejercicio en su cuaderno y luego marque o escriba su respuesta.</li>
+      <li>Presione <em>Revisar</em> para recibir retroalimentación. Puede intentarlo cuantas veces quiera.</li>
+    </ul>
+    <div class="ref" id="refbox"></div>
+    <div class="name"><label for="nombre">Nombre:</label><input type="text" id="nombre" placeholder="Escriba su nombre completo"></div>
+  </section>
+  <div id="quiz"></div>
+  <section class="report" id="report">
+    <h3 style="margin-top:0">Resumen de resultados</h3>
+    <p id="reportHead"></p>
+    <table><thead><tr><th>#</th><th>Contenido</th><th>Resultado</th><th>Intentos</th></tr></thead><tbody id="reportBody"></tbody></table>
+    <div class="actions" style="margin-top:12px">
+      <button onclick="window.print()">Imprimir o guardar PDF</button>
+      <button class="ghost" onclick="copyReport()">Copiar resumen</button>
+    </div>
+  </section>
+  <div class="summary">
+    <span class="score" id="score">0 / 0 correctas</span>
+    <div class="bar"><div id="barFill"></div></div>
+    <button onclick="showReport()">Ver resumen</button>
+    <button class="ghost" onclick="resetAll()">Reiniciar</button>
+  </div>
+</div>
+<script>
+/* Figuras SVG reutilizables. Todas usan las variables de color del tema. */
+const FIGS = {
+  // Triángulo rectángulo: ángulo en abajo-izquierda, ángulo recto abajo-derecha
+  tri({w=240,h=130,base="",alt="",hip="",ang="",angTop=false,angTopLbl=""}={}){
+    const x0=30,y0=h+20,x1=x0+w,y1=20, a=Math.atan2(h,w), r=34;
+    const bx=x0+r*Math.cos(a), by=y0-r*Math.sin(a);
+    let top="";
+    if(angTop){
+      const b=Math.atan2(w,h), r2=26;
+      top=`<path d="M ${x1} ${y1+r2} A ${r2} ${r2} 0 0 1 ${x1-r2*Math.sin(b)} ${y1+r2*Math.cos(b)}" fill="none" stroke="var(--fig-accent)" stroke-width="2"/>
+      <text x="${x1-14}" y="${y1+r2+18}" fill="var(--fig-accent)" font-size="15" font-style="italic">${angTopLbl}</text>`;
+    }
+    return `<svg viewBox="0 0 ${w+110} ${h+60}" width="${w+110}" role="img" aria-label="Triángulo rectángulo">
+      <polygon points="${x0},${y0} ${x1},${y0} ${x1},${y1}" fill="none" stroke="var(--fig)" stroke-width="2.5" stroke-linejoin="round"/>
+      <rect x="${x1-14}" y="${y0-14}" width="14" height="14" fill="none" stroke="var(--fig)" stroke-width="1.5"/>
+      <path d="M ${x0+r} ${y0} A ${r} ${r} 0 0 0 ${bx} ${by}" fill="none" stroke="var(--fig-accent)" stroke-width="2"/>
+      <text x="${x0+r+6}" y="${y0-8}" fill="var(--fig-accent)" font-size="15" font-style="italic">${ang}</text>
+      <text x="${(x0+x1)/2}" y="${y0+20}" text-anchor="middle" fill="var(--fig)" font-size="15">${base}</text>
+      <text x="${x1+8}" y="${(y0+y1)/2+5}" fill="var(--fig)" font-size="15">${alt}</text>
+      <text x="${(x0+x1)/2-10}" y="${(y0+y1)/2-8}" text-anchor="end" fill="var(--fig)" font-size="15">${hip}</text>
+      ${top}</svg>`;
+  },
+  // Triángulo cualquiera. P = {A:[x,y],B:[x,y],C:[x,y]}; lados a (BC), b (AC), c (AB); ángulos en A, B, C
+  tri3({A,B,C,a="",b="",c="",angA="",angB="",angC="",names=["A","B","C"]}){
+    const G=[(A[0]+B[0]+C[0])/3,(A[1]+B[1]+C[1])/3];
+    const out=(P,Q,lbl)=>{ if(!lbl) return "";
+      const M=[(P[0]+Q[0])/2,(P[1]+Q[1])/2]; let dx=M[0]-G[0], dy=M[1]-G[1]; const L=Math.hypot(dx,dy)||1;
+      const x=M[0]+dx/L*16, y=M[1]+dy/L*16+5;
+      return `<text x="${x}" y="${y}" text-anchor="middle" fill="var(--fig)" font-size="15">${lbl}</text>`; };
+    const inA=(P,lbl)=>{ if(!lbl) return "";
+      let dx=G[0]-P[0], dy=G[1]-P[1]; const L=Math.hypot(dx,dy);
+      return `<text x="${P[0]+dx/L*34}" y="${P[1]+dy/L*34+5}" text-anchor="middle" fill="var(--fig-accent)" font-size="14">${lbl}</text>`; };
+    const vn=(P,n)=>{ let dx=P[0]-G[0], dy=P[1]-G[1]; const L=Math.hypot(dx,dy);
+      return `<text x="${P[0]+dx/L*15}" y="${P[1]+dy/L*15+5}" text-anchor="middle" fill="var(--fig)" font-size="15" font-weight="700">${n}</text>`; };
+    const xs=[A[0],B[0],C[0]], ys=[A[1],B[1],C[1]];
+    const W=Math.max(...xs)+60, H=Math.max(...ys)+40;
+    return `<svg viewBox="0 0 ${W} ${H}" width="${W}" role="img" aria-label="Triángulo">
+      <polygon points="${A} ${B} ${C}" fill="none" stroke="var(--fig)" stroke-width="2.5" stroke-linejoin="round"/>
+      ${out(B,C,a)}${out(A,C,b)}${out(A,B,c)}${inA(A,angA)}${inA(B,angB)}${inA(C,angC)}
+      ${vn(A,names[0])}${vn(B,names[1])}${vn(C,names[2])}</svg>`;
+  },
+  tree(){ return `<svg viewBox="0 0 340 190" width="340" role="img" aria-label="Estudiante observa la copa de un árbol">
+    <line x1="10" y1="170" x2="330" y2="170" stroke="var(--fig)" stroke-width="2"/>
+    <circle cx="40" cy="146" r="7" fill="none" stroke="var(--fig)" stroke-width="2"/><line x1="40" y1="153" x2="40" y2="170" stroke="var(--fig)" stroke-width="2"/>
+    <line x1="280" y1="170" x2="280" y2="60" stroke="var(--fig)" stroke-width="5"/>
+    <circle cx="280" cy="48" r="26" fill="none" stroke="var(--ok)" stroke-width="2.5"/>
+    <line x1="40" y1="170" x2="280" y2="35" stroke="var(--fig-accent)" stroke-width="2" stroke-dasharray="6 4"/>
+    <path d="M 85 170 A 45 45 0 0 0 79 148" fill="none" stroke="var(--fig-accent)" stroke-width="2"/>
+    <text x="90" y="160" fill="var(--fig-accent)" font-size="14">38°</text>
+    <text x="160" y="186" text-anchor="middle" fill="var(--fig)" font-size="14">25 m</text>
+    <text x="292" y="120" fill="var(--fig)" font-size="14">h = ?</text></svg>`; },
+  lighthouse(){ return `<svg viewBox="0 0 360 190" width="360" role="img" aria-label="Faro y barco">
+    <path d="M10 172 Q 90 166 180 172 T 350 172" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <polygon points="30,170 48,40 66,40 84,170" fill="none" stroke="var(--fig)" stroke-width="2.5"/>
+    <line x1="57" y1="40" x2="300" y2="40" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <line x1="57" y1="40" x2="300" y2="165" stroke="var(--fig-accent)" stroke-width="2"/>
+    <path d="M 120 40 A 63 63 0 0 1 113 69" fill="none" stroke="var(--fig-accent)" stroke-width="2"/>
+    <text x="124" y="62" fill="var(--fig-accent)" font-size="14">22°</text>
+    <polygon points="285,160 318,160 312,170 291,170" fill="var(--fig)"/>
+    <text x="8" y="110" fill="var(--fig)" font-size="14">40 m</text>
+    <text x="185" y="186" text-anchor="middle" fill="var(--fig)" font-size="14">d = ?</text></svg>`; },
+  kite(){ return `<svg viewBox="0 0 340 200" width="340" role="img" aria-label="Cometa">
+    <line x1="10" y1="180" x2="330" y2="180" stroke="var(--fig)" stroke-width="2"/>
+    <circle cx="40" cy="146" r="7" fill="none" stroke="var(--fig)" stroke-width="2"/><line x1="40" y1="153" x2="40" y2="180" stroke="var(--fig)" stroke-width="2"/>
+    <line x1="40" y1="160" x2="270" y2="160" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <line x1="40" y1="160" x2="270" y2="30" stroke="var(--fig-accent)" stroke-width="2"/>
+    <polygon points="270,14 284,30 270,46 256,30" fill="none" stroke="var(--ok)" stroke-width="2.5"/>
+    <path d="M 92 160 A 52 52 0 0 0 85 135" fill="none" stroke="var(--fig-accent)" stroke-width="2"/>
+    <text x="98" y="152" fill="var(--fig-accent)" font-size="14">35°</text>
+    <text x="150" y="88" fill="var(--fig)" font-size="14">50 m</text>
+    <text x="30" y="172" text-anchor="end" fill="var(--fig)" font-size="11">1,5 m</text>
+    <line x1="300" y1="180" x2="300" y2="30" stroke="var(--muted)" stroke-width="1"/>
+    <text x="306" y="105" fill="var(--fig)" font-size="14">H = ?</text></svg>`; },
+  buildings(){ return `<svg viewBox="-14 0 374 220" width="374" role="img" aria-label="Dos edificios">
+    <line x1="10" y1="200" x2="350" y2="200" stroke="var(--fig)" stroke-width="2"/>
+    <rect x="30" y="90" width="40" height="110" fill="none" stroke="var(--fig)" stroke-width="2.5"/>
+    <rect x="270" y="40" width="50" height="160" fill="none" stroke="var(--fig)" stroke-width="2.5"/>
+    <line x1="70" y1="90" x2="270" y2="90" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <line x1="70" y1="90" x2="270" y2="200" stroke="var(--fig-accent)" stroke-width="2"/>
+    <line x1="70" y1="90" x2="270" y2="40" stroke="var(--ok)" stroke-width="2"/>
+    <path d="M 125 90 A 55 55 0 0 1 118 116" fill="none" stroke="var(--fig-accent)" stroke-width="2"/>
+    <text x="128" y="114" fill="var(--fig-accent)" font-size="13">40°</text>
+    <path d="M 125 90 A 55 55 0 0 0 123 76" fill="none" stroke="var(--ok)" stroke-width="2"/>
+    <text x="128" y="80" fill="var(--ok)" font-size="13">20°</text>
+    <text x="26" y="150" text-anchor="end" fill="var(--fig)" font-size="13">30 m</text>
+    <text x="170" y="215" text-anchor="middle" fill="var(--fig)" font-size="13">d = ?</text>
+    <text x="326" y="125" fill="var(--fig)" font-size="13">H = ?</text></svg>`; }
+};
+
+</script>
+<script>
+/* =====================================================================
+   Motor de prácticas autocorregibles · Vista Atenas High School
+   Tipos de pregunta: mc (selección única), num (numérica),
+   expr (expresión algebraica escrita) y match (pareo).
+   ===================================================================== */
+
+/* ---------------------- Analizador de expresiones ---------------------- */
+const Expr = (() => {
+  function tokenize(src){
+    const s = src.replace(/[−–]/g,"-").replace(/[·×]/g,"*").replace(/÷/g,"/")
+                 .replace(/²/g,"^2").replace(/³/g,"^3").replace(/[\[{]/g,"(").replace(/[\]}]/g,")");
+    const t=[]; let i=0;
+    while(i<s.length){
+      const c=s[i];
+      if(/\s/.test(c)){ i++; continue; }
+      if(/[0-9.,]/.test(c)){
+        let j=i; while(j<s.length && /[0-9.,]/.test(s[j])) j++;
+        const raw=s.slice(i,j).replace(",",".");
+        if(isNaN(Number(raw))) throw new Error("número");
+        t.push({k:"num",v:Number(raw)}); i=j; continue;
+      }
+      if(/[a-zA-Z]/.test(c)){ t.push({k:"var",v:c}); i++; continue; }
+      if("+-*/^()".includes(c)){ t.push({k:c}); i++; continue; }
+      throw new Error("símbolo "+c);
+    }
+    return t;
+  }
+  function parse(src){
+    const t=tokenize(src); let p=0;
+    const peek=()=>t[p], eat=k=>{ if(!t[p]||t[p].k!==k) throw new Error("esperaba "+k); return t[p++]; };
+    function expr(){
+      let n=term();
+      while(peek() && (peek().k==="+"||peek().k==="-")){ const op=t[p++].k; n={t:op,l:n,r:term()}; }
+      return n;
+    }
+    function term(){
+      let n=unary();
+      for(;;){
+        const k=peek()&&peek().k;
+        if(k==="*"||k==="/"){ p++; n={t:k,l:n,r:unary()}; }
+        else if(k==="num"||k==="var"||k==="("){ n={t:"*",l:n,r:power()}; }
+        else break;
+      }
+      return n;
+    }
+    function unary(){
+      if(peek()&&peek().k==="-"){ p++; return {t:"neg",a:unary()}; }
+      if(peek()&&peek().k==="+"){ p++; return unary(); }
+      return power();
+    }
+    function power(){
+      const b=atom();
+      if(peek()&&peek().k==="^"){ p++; return {t:"^",l:b,r:unary()}; }
+      return b;
+    }
+    function atom(){
+      const x=peek(); if(!x) throw new Error("incompleto");
+      if(x.k==="num"){ p++; return {t:"num",v:x.v}; }
+      if(x.k==="var"){ p++; return {t:"var",n:x.v}; }
+      if(x.k==="("){ p++; const n=expr(); eat(")"); return n; }
+      throw new Error("inesperado");
+    }
+    if(!t.length) throw new Error("vacío");
+    const n=expr(); if(p<t.length) throw new Error("sobra");
+    return n;
+  }
+  function ev(n,env){
+    switch(n.t){
+      case "num": return n.v;
+      case "var": return env[n.n] ?? NaN;
+      case "neg": return -ev(n.a,env);
+      case "+": return ev(n.l,env)+ev(n.r,env);
+      case "-": return ev(n.l,env)-ev(n.r,env);
+      case "*": return ev(n.l,env)*ev(n.r,env);
+      case "/": return ev(n.l,env)/ev(n.r,env);
+      case "^": return Math.pow(ev(n.l,env),ev(n.r,env));
+    }
+  }
+  function vars(n,set=new Set()){
+    if(n.t==="var") set.add(n.n);
+    for(const k of ["a","l","r"]) if(n[k]) vars(n[k],set);
+    return set;
+  }
+  const isConst=n=>vars(n).size===0;
+  function rnd(){ let v; do{ v=(Math.random()*6-3); }while(Math.abs(v)<0.35 || Math.abs(Math.abs(v)-1)<0.05 || Math.abs(Math.abs(v)-2)<0.05 || Math.abs(Math.abs(v)-3)<0.05); return v; }
+  function equiv(a,b){
+    const vs=new Set([...vars(a),...vars(b)]); let good=0;
+    for(let k=0;k<40 && good<8;k++){
+      const env={}; vs.forEach(v=>env[v]=rnd());
+      const x=ev(a,env), y=ev(b,env);
+      if(!isFinite(x)||!isFinite(y)||Math.abs(x)>1e9||Math.abs(y)>1e9) continue;
+      if(Math.abs(x-y)>1e-7*Math.max(1,Math.abs(x),Math.abs(y))) return false;
+      good++;
+    }
+    return good>=5;
+  }
+  function factors(n){
+    if(n.t==="*") return [...factors(n.l),...factors(n.r)];
+    if(n.t==="neg") return factors(n.a);
+    return [n];
+  }
+  function countFactors(n){
+    let c=0;
+    for(const f of factors(n)){
+      if(isConst(f)) continue;
+      if(f.t==="^" && isConst(f.r)) c+=Math.round(ev(f.r,{}));
+      else c+=1;
+    }
+    return c;
+  }
+  function isProduct(n){ return factors(n).filter(f=>!isConst(f)).length>=2 || (factors(n).some(f=>f.t==="^")); }
+  function terms(n){
+    if(n.t==="+") return [...terms(n.l),...terms(n.r)];
+    if(n.t==="-") return [...terms(n.l),...terms(n.r)];
+    if(n.t==="neg") return terms(n.a);
+    return [n];
+  }
+  function hasSum(n){ return n.t==="+"||n.t==="-"||(n.t==="neg"&&hasSum(n.a)); }
+  function unexpanded(n){
+    if(n.t==="*" && (hasSum(n.l)||hasSum(n.r))) return true;
+    if(n.t==="^" && hasSum(n.l)) return true;
+    if(n.t==="/" && !isConst(n.r)) return true;
+    if(n.t==="/" && hasSum(n.l)) return true;
+    for(const k of ["a","l","r"]) if(n[k] && unexpanded(n[k])) return true;
+    return false;
+  }
+  function hasDiv(n){ if(n.t==="/") return true; for(const k of ["a","l","r"]) if(n[k]&&hasDiv(n[k])) return true; return false; }
+  function numDen(n){
+    if(n.t==="neg"){ const r=numDen(n.a); return r && {N:{t:"neg",a:r.N},D:r.D}; }
+    if(n.t==="/" && !hasDiv(n.l) && !hasDiv(n.r)) return {N:n.l,D:n.r};
+    if(!hasDiv(n)) return {N:n,D:{t:"num",v:1}};
+    return null;
+  }
+  function degree(n){
+    const vs=[...vars(n)]; if(!vs.length) return 0;
+    let best=0;
+    for(let trial=0;trial<3;trial++){
+      const p={}, d={}; vs.forEach(v=>{p[v]=Math.floor(Math.random()*5)-2; d[v]=1+Math.floor(Math.random()*3);});
+      let f=[]; for(let k=0;k<10;k++){ const env={}; vs.forEach(v=>env[v]=p[v]+k*d[v]); f.push(ev(n,env)); }
+      let deg=0, row=f;
+      for(let o=1;o<9;o++){
+        row=row.slice(1).map((v,i)=>v-row[i]);
+        const scale=Math.max(1,...f.map(Math.abs));
+        if(row.some(v=>Math.abs(v)>1e-9*scale)) deg=o; else break;
+      }
+      best=Math.max(best,deg);
+    }
+    return best;
+  }
+  const PREC={"+":1,"-":1,"*":2,"/":2,"neg":2,"^":4,"num":5,"var":5};
+  function fmt(v){ return String(+v.toFixed(6)).replace(".","{,}"); }
+  function tex(n,pp=0){
+    let s;
+    switch(n.t){
+      case "num": s=fmt(n.v); break;
+      case "var": s=n.n; break;
+      case "+": s=tex(n.l,1)+"+"+tex(n.r,1); break;
+      case "-": s=tex(n.l,1)+"-"+tex(n.r,1.5); break;
+      case "neg": s="-"+tex(n.a,2.5); break;
+      case "*": { const L=tex(n.l,2), R=tex(n.r,2.5);
+        const needDot=(n.r.t==="num"||n.r.t==="neg"||(n.r.t==="^"&&n.r.l.t==="num"));
+        s=L+(needDot?" \\cdot ":" ")+R; break; }
+      case "/": s="\\dfrac{"+tex(n.l,0)+"}{"+tex(n.r,0)+"}"; break;
+      case "^": s="{"+tex(n.l,4.5)+"}^{"+tex(n.r,0)+"}"; break;
+    }
+    return (PREC[n.t]<pp) ? "\\left("+s+"\\right)" : s;
+  }
+  return {parse,equiv,countFactors,isProduct,terms,unexpanded,numDen,degree,tex,hasDiv};
+})();
+
+/* ---------------------------- Utilidades ---------------------------- */
+function renderMath(el){
+  if(window.renderMathInElement) renderMathInElement(el,{delimiters:[{left:"$",right:"$",display:false}],throwOnError:false});
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function parseNum(s){ s=(s||"").trim().replace(/\s/g,"").replace(",","."); return s===""?NaN:Number(s); }
+const LET="abcdefghijklmnop";
+
+/* ------------------------------ Motor ------------------------------ */
+let P, Q, state;
+function startPractice(data){
+  P=data; Q=data.preguntas; state=Q.map(()=>({tries:0,correct:false,firstOk:null}));
+  document.title=data.titulo+" · Práctica Noveno";
+  document.getElementById("titulo").textContent=data.titulo;
+  document.getElementById("subtitulo").textContent=data.sub||"";
+  document.getElementById("refbox").innerHTML=data.ref||"";
+  document.getElementById("instr").insertAdjacentHTML("beforeend",(data.instr||[]).map(x=>`<li>${x}</li>`).join(""));
+  if(!data.ref) document.getElementById("refbox").style.display="none";
+  renderMath(document.querySelector(".intro"));
+  render(); updateScore();
+}
+function figHtml(f){ if(!f) return ""; return `<div class="fig">${FIGS[f.f](f.a||{})}</div>`; }
+function render(){
+  const quiz=document.getElementById("quiz"); let h="";
+  Q.forEach((q,i)=>{
+    if(q.sec) h+=`<h2>${q.sec}</h2>`;
+    const tag={mc:"Selección única",num:"Respuesta numérica",expr:"Respuesta escrita",match:"Pareo"}[q.type];
+    h+=`<div class="q" id="q${i}"><div class="qhead"><span class="qnum">Pregunta ${i+1}</span><span class="tag">${tag}</span></div>
+        <div class="stem">${q.stem}</div>${figHtml(q.fig)}`;
+    if(q.type==="mc"){
+      h+=`<div class="opts">`+q.opts.map((o,k)=>`<label class="opt" id="o${i}_${k}"><input type="radio" name="r${i}" value="${k}"><span>${LET[k]})</span><span>${o}</span></label>`).join("")+`</div>`;
+    } else if(q.type==="num"){
+      h+=`<div class="numrow"><input class="n" type="text" inputmode="decimal" id="n${i}" placeholder="Respuesta" aria-label="Respuesta"><span class="unit">${q.unit||""}</span></div>`;
+    } else if(q.type==="expr"){
+      h+=`<div class="numrow"><input class="e" type="text" id="n${i}" autocomplete="off" spellcheck="false" placeholder="${q.ph||"Escriba su respuesta"}" aria-label="Respuesta" oninput="preview(${i})"></div>
+          <div class="preview" id="pv${i}">Vista previa</div>
+          <div class="howto">Use ^ para exponentes (x^2), / para fracciones y paréntesis: (x+3)/(x-2).</div>`;
+    } else if(q.type==="match"){
+      h+=`<div class="optlist">`+q.opts.map((o,k)=>`<div><b>${LET[k]})</b> ${o}</div>`).join("")+`</div><table class="match">`+
+         q.items.map((it,j)=>`<tr id="m${i}_${j}"><td>${j+1}.</td><td>${it.p}</td><td><select id="s${i}_${j}" aria-label="Opción para ${j+1}"><option value="">—</option>${q.opts.map((_,k)=>`<option value="${k}">${LET[k]})</option>`).join("")}</select></td><td class="mk"></td></tr>`).join("")+`</table>`;
+    }
+    h+=`<div class="actions"><button onclick="check(${i})">Revisar</button><button class="ghost" id="b${i}" onclick="toggleSol(${i})" disabled>Ver solución</button></div>
+        <div class="fb" id="f${i}"></div><div class="sol" id="sol${i}"><b>Solución:</b> ${q.sol}</div></div>`;
+  });
+  quiz.innerHTML=h; renderMath(quiz);
+}
+function preview(i){
+  const el=document.getElementById("pv"+i), v=document.getElementById("n"+i).value;
+  if(!v.trim()){ el.className="preview"; el.textContent="Vista previa"; return; }
+  try{ const n=Expr.parse(v); el.className="preview ok"; if(window.katex) katex.render(Expr.tex(n),el,{throwOnError:false,displayMode:false}); else el.textContent=v; }
+  catch(e){ el.className="preview"; el.textContent="Expresión incompleta…"; }
+}
+function show(el,cls,html){ el.className="fb show "+cls; el.innerHTML=html; renderMath(el); }
+function check(i){
+  const q=Q[i], st=state[i], fb=document.getElementById("f"+i);
+  let ok=false, msg="", cls="bad";
+  if(q.type==="mc"){
+    const sel=document.querySelector(`input[name=r${i}]:checked`);
+    if(!sel) return show(fb,"warn","Seleccione una opción antes de revisar.");
+    const k=+sel.value; q.opts.forEach((_,j)=>document.getElementById(`o${i}_${j}`).classList.remove("sel-ok","sel-bad"));
+    ok=k===q.ans; document.getElementById(`o${i}_${k}`).classList.add(ok?"sel-ok":"sel-bad");
+    msg=ok?"¡Correcto!":(q.fb&&q.fb[k])||"Revise su procedimiento.";
+  }
+  else if(q.type==="num"){
+    const v=parseNum(document.getElementById("n"+i).value);
+    if(isNaN(v)) return show(fb,"warn","Escriba un número (puede usar coma o punto decimal).");
+    ok=Math.abs(v-q.ans)<=q.tol;
+    if(ok) msg="¡Correcto!";
+    else{
+      const e=(q.errs||[]).find(e=>Math.abs(v-e.v)<=Math.max(0.06,Math.abs(e.v)*0.003));
+      if(e) msg=e.m;
+      else if(Math.abs(v-q.ans)<=Math.max(0.3,Math.abs(q.ans)*0.01)){ msg="Está muy cerca. Revise el redondeo: no redondee pasos intermedios y escriba dos decimales."; cls="warn"; }
+      else msg="Todavía no. Pista: "+q.hint;
+    }
+  }
+  else if(q.type==="expr"){
+    const raw=document.getElementById("n"+i).value; let n;
+    try{ n=Expr.parse(raw); }catch(e){ return show(fb,"warn","No se pudo leer la expresión. Revise los paréntesis y use ^ para los exponentes."); }
+    const A=Expr.parse(q.ans);
+    if(!Expr.equiv(n,A)){
+      const e=(q.errs||[]).find(e=>{ try{ return Expr.equiv(n,Expr.parse(e.e)); }catch(_){ return false; } });
+      msg=e?e.m:"Todavía no es equivalente a la respuesta correcta. Pista: "+q.hint;
+    } else {
+      ok=true;
+      if(q.form==="factor"){
+        if(!Expr.isProduct(n)){ ok=false; cls="warn"; msg="Su expresión es equivalente, pero no está factorizada: debe quedar escrita como un producto."; }
+        else if(Expr.countFactors(n)<q.nfact){ ok=false; cls="warn"; msg="Va bien, pero todavía se puede factorizar más. Revise si algún factor es una diferencia de cuadrados, un trinomio o una suma/diferencia de cubos."; }
+      } else if(q.form==="poly"){
+        if(Expr.unexpanded(n)){ ok=false; cls="warn"; msg="Es equivalente, pero debe desarrollar los productos y escribir el resultado como un polinomio."; }
+        else if(Expr.terms(n).length>Expr.terms(A).length){ ok=false; cls="warn"; msg="Es equivalente, pero falta reducir términos semejantes."; }
+      } else if(q.form==="frac"){
+        const nd=Expr.numDen(n), ad=Expr.numDen(A);
+        if(!nd){ ok=false; cls="warn"; msg="Es equivalente, pero escriba el resultado como una sola fracción (numerador entre denominador)."; }
+        else if(Expr.degree(nd.D)>Expr.degree(ad.D)){ ok=false; cls="warn"; msg="Es equivalente, pero todavía se puede simplificar: factorice numerador y denominador y cancele los factores comunes."; }
+      }
+      if(ok) msg="¡Correcto!";
+    }
+  }
+  else if(q.type==="match"){
+    let good=0, empty=0;
+    q.items.forEach((it,j)=>{
+      const v=document.getElementById(`s${i}_${j}`).value, row=document.getElementById(`m${i}_${j}`);
+      row.classList.remove("ok","bad"); const mk=row.querySelector(".mk");
+      if(v===""){ empty++; mk.textContent=""; return; }
+      if(+v===it.ans){ good++; row.classList.add("ok"); mk.textContent="✔"; }
+      else { row.classList.add("bad"); mk.textContent="✘"; }
+    });
+    if(empty===q.items.length) return show(fb,"warn","Elija una opción para cada expresión.");
+    ok=good===q.items.length;
+    const used={}; q.items.forEach((_,j)=>{ const v=document.getElementById(`s${i}_${j}`).value; if(v!=="") used[v]=(used[v]||0)+1; });
+    const rep=Object.values(used).some(c=>c>1);
+    msg=ok?"¡Correcto! Todas las parejas están bien.":`Tiene ${good} de ${q.items.length} correctas.`+(rep?" Recuerde que cada opción se usa una sola vez.":"")+(empty?` Le faltan ${empty} por responder.`:"")+" Revise las marcadas con ✘.";
+    if(!ok && good>0) cls="warn";
+  }
+  st.tries++; if(st.firstOk===null) st.firstOk=ok; st.correct=ok;
+  if(ok) cls="ok";
+  const card=document.getElementById("q"+i); card.classList.remove("ok","bad"); card.classList.add(ok?"ok":"bad");
+  const extra=(!ok&&st.tries>=2)?"<br><small>Ya puede consultar la solución con el botón «Ver solución».</small>":"";
+  show(fb,cls,`<b>${ok?"✔":"✘"}</b> <span class="t">${msg}</span>${extra}`);
+  document.getElementById("b"+i).disabled=!(ok||st.tries>=2);
+  updateScore();
+}
+function toggleSol(i){ document.getElementById("sol"+i).classList.toggle("show"); }
+function updateScore(){
+  const d=state.filter(s=>s.correct).length;
+  document.getElementById("score").textContent=`${d} / ${Q.length} correctas`;
+  document.getElementById("barFill").style.width=(100*d/Q.length)+"%";
+  try{ const k="p9_tema_"+P.id, prev=JSON.parse(localStorage.getItem(k)||"null");
+       if(!prev||d>prev.best) localStorage.setItem(k,JSON.stringify({best:d,total:Q.length})); }catch(e){}
+}
+function showReport(){
+  const name=document.getElementById("nombre").value.trim()||"(sin nombre)";
+  const first=state.filter(s=>s.firstOk).length, now=state.filter(s=>s.correct).length, ans=state.filter(s=>s.tries>0).length;
+  document.getElementById("reportHead").innerHTML=`<b>Estudiante:</b> ${esc(name)}<br><b>Tema:</b> ${esc(P.titulo)}<br><b>Respondidas:</b> ${ans} de ${Q.length} · <b>Correctas al primer intento:</b> ${first} · <b>Correctas al final:</b> ${now}<br><b>Fecha:</b> ${new Date().toLocaleString("es-CR")}`;
+  document.getElementById("reportBody").innerHTML=Q.map((q,i)=>{const s=state[i];
+    return `<tr><td>${i+1}</td><td>${q.tema||""}</td><td>${s.tries===0?"Sin responder":(s.correct?"Correcta":"Incorrecta")}</td><td>${s.tries}</td></tr>`;}).join("");
+  const r=document.getElementById("report"); r.classList.add("show"); r.scrollIntoView({behavior:"smooth"});
+}
+function copyReport(){
+  const name=document.getElementById("nombre").value.trim()||"(sin nombre)";
+  const L=[`${P.titulo} - ${name}`,`Correctas al primer intento: ${state.filter(s=>s.firstOk).length}/${Q.length}`,`Correctas al final: ${state.filter(s=>s.correct).length}/${Q.length}`];
+  Q.forEach((q,i)=>{const s=state[i]; L.push(`${i+1}. ${q.tema||""}: ${s.tries===0?"sin responder":(s.correct?"correcta":"incorrecta")} (${s.tries} intentos)`);});
+  const txt=L.join("\n");
+  if(navigator.clipboard) navigator.clipboard.writeText(txt).then(()=>alert("Resumen copiado. Puede pegarlo y enviarlo al profesor."),()=>prompt("Copie el resumen:",txt));
+  else prompt("Copie el resumen:",txt);
+}
+function resetAll(){
+  if(!confirm("¿Borrar todas sus respuestas y empezar de nuevo?")) return;
+  state.forEach(s=>{s.tries=0;s.correct=false;s.firstOk=null;});
+  render(); updateScore(); document.getElementById("report").classList.remove("show"); window.scrollTo({top:0});
+}
+
+</script>
+<script>
+/* Datos del tema 2. Generado y verificado automáticamente. */
+window.PRACTICA = {
+ "titulo": "Ley de senos y ley de cosenos",
+ "sub": "Conceptos · Cálculo de lados y ángulos · Problemas de aplicación",
+ "instr": [
+  "Escriba las respuestas numéricas con <b>dos decimales</b> (coma o punto).",
+  "Verifique que su calculadora esté en modo <b>DEG</b>.",
+  "Las figuras no están a escala."
+ ],
+ "ref": "<b>Ley de senos:</b> $\\dfrac{a}{\\mathrm{sen}\\,A}=\\dfrac{b}{\\mathrm{sen}\\,B}=\\dfrac{c}{\\mathrm{sen}\\,C}$ &nbsp;&nbsp; <b>Ley de cosenos:</b> $a^2=b^2+c^2-2bc\\cos A$ &nbsp;&nbsp; $\\cos A=\\dfrac{b^2+c^2-a^2}{2bc}$",
+ "preguntas": [
+  {
+   "type": "mc",
+   "stem": "¿Cuál expresión corresponde a la <b>ley de senos</b> en un triángulo $ABC$?",
+   "opts": [
+    "$a^2=b^2+c^2-2bc\\cos A$",
+    "$\\dfrac{a}{\\cos A}=\\dfrac{b}{\\cos B}=\\dfrac{c}{\\cos C}$",
+    "$\\dfrac{a}{\\mathrm{sen}\\,A}=\\dfrac{b}{\\mathrm{sen}\\,B}=\\dfrac{c}{\\mathrm{sen}\\,C}$",
+    "$a\\,\\mathrm{sen}\\,A=b\\,\\mathrm{sen}\\,B$"
+   ],
+   "ans": 2,
+   "fb": [
+    "Esa es la <b>ley de cosenos</b>.",
+    "La ley usa senos, no cosenos.",
+    "",
+    "Cada lado se <b>divide</b> entre el seno de su ángulo opuesto, no se multiplica."
+   ],
+   "sol": "La ley de senos relaciona cada lado con el seno de su ángulo opuesto: $\\dfrac{a}{\\mathrm{sen}\\,A}=\\dfrac{b}{\\mathrm{sen}\\,B}=\\dfrac{c}{\\mathrm{sen}\\,C}$.",
+   "tema": "Conceptos",
+   "sec": "1. Conceptos"
+  },
+  {
+   "type": "mc",
+   "stem": "Se conocen dos lados de un triángulo y el ángulo comprendido entre ellos. ¿Qué ley se usa para hallar el tercer lado?",
+   "opts": [
+    "Ley de senos",
+    "Ley de cosenos",
+    "Teorema de Pitágoras",
+    "Razón tangente"
+   ],
+   "ans": 1,
+   "fb": [
+    "Para la ley de senos necesita un lado y su ángulo opuesto; aquí el ángulo conocido no es opuesto a ningún lado conocido.",
+    "",
+    "Pitágoras solo sirve en triángulos rectángulos.",
+    "Las razones trigonométricas básicas solo sirven en triángulos rectángulos."
+   ],
+   "sol": "Con dos lados y el ángulo comprendido (LAL) se usa la ley de cosenos.",
+   "tema": "Conceptos"
+  },
+  {
+   "type": "mc",
+   "stem": "En un triángulo, el ángulo $A$ mide 30°, el lado $a$ mide 6 cm y el ángulo $B$ mide 90°. Según la ley de senos, ¿cuánto mide el lado $b$?",
+   "opts": [
+    "$3$ cm",
+    "$6$ cm",
+    "$6\\sqrt{3}$ cm",
+    "$12$ cm"
+   ],
+   "ans": 3,
+   "fb": [
+    "Multiplicó por $\\mathrm{sen}\\,30°$ en lugar de dividir.",
+    "Ese es el lado $a$; el lado $b$ es opuesto a 90°.",
+    "Ese valor no sale de la ley de senos con estos datos.",
+    ""
+   ],
+   "sol": "$\\dfrac{b}{\\mathrm{sen}\\,90°}=\\dfrac{6}{\\mathrm{sen}\\,30°}\\Rightarrow b=\\dfrac{6\\cdot 1}{0{,}5}=12$ cm.",
+   "tema": "Ley de senos"
+  },
+  {
+   "type": "mc",
+   "stem": "En un triángulo, $a=5$ cm, $b=8$ cm y el ángulo $C$ mide 60°. Según la ley de cosenos, ¿cuánto mide el lado $c$?",
+   "opts": [
+    "$7$ cm",
+    "$\\sqrt{89}$ cm",
+    "$\\sqrt{129}$ cm",
+    "$49$ cm"
+   ],
+   "ans": 0,
+   "fb": [
+    "",
+    "Olvidó restar $2ab\\cos C$: $c^2=a^2+b^2-2ab\\cos C$.",
+    "Sumó $2ab\\cos C$ en lugar de restarlo.",
+    "Ese es $c^2$; falta sacar la raíz cuadrada."
+   ],
+   "sol": "$c^2=5^2+8^2-2(5)(8)\\cos 60°=25+64-40=49\\Rightarrow c=7$ cm.",
+   "tema": "Ley de cosenos"
+  },
+  {
+   "type": "num",
+   "stem": "En el triángulo $ABC$, $A=42°$, $B=71°$ y $a=18$ cm. Determine el lado $b$.",
+   "ans": 25.43,
+   "tol": 0.05,
+   "unit": "cm",
+   "errs": [
+    {
+     "v": 12.74,
+     "m": "Invirtió los senos. El lado $b$ va con el seno de su ángulo <b>opuesto</b>: $b=\\dfrac{18\\cdot\\mathrm{sen}\\,71°}{\\mathrm{sen}\\,42°}$."
+    },
+    {
+     "v": -18.68,
+     "m": "Su calculadora está en modo <b>RAD</b>. Cámbiela a <b>DEG</b> (grados) y vuelva a calcular."
+    }
+   ],
+   "hint": "Plantee $\\dfrac{b}{\\mathrm{sen}\\,B}=\\dfrac{a}{\\mathrm{sen}\\,A}$ y despeje $b$.",
+   "sol": "$\\dfrac{b}{\\mathrm{sen}\\,71°}=\\dfrac{18}{\\mathrm{sen}\\,42°}\\Rightarrow b=\\dfrac{18\\cdot\\mathrm{sen}\\,71°}{\\mathrm{sen}\\,42°}\\approx 25{,}43$ cm.",
+   "tema": "Ley de senos",
+   "sec": "2. Cálculo de lados y ángulos",
+   "fig": {
+    "f": "tri3",
+    "a": {
+     "A": [
+      30,
+      170
+     ],
+     "B": [
+      300,
+      170
+     ],
+     "C": [
+      200,
+      30
+     ],
+     "a": "18 cm",
+     "b": "b",
+     "angA": "42°",
+     "angB": "71°"
+    }
+   }
+  },
+  {
+   "type": "num",
+   "stem": "En el triángulo $ABC$, $a=12$ m, $b=15$ m y $A=38°$. Determine el ángulo agudo $B$.",
+   "ans": 50.32,
+   "tol": 0.05,
+   "unit": "°",
+   "errs": [
+    {
+     "v": 29.51,
+     "m": "Intercambió los lados: $\\mathrm{sen}\\,B=\\dfrac{15\\cdot\\mathrm{sen}\\,38°}{12}$."
+    },
+    {
+     "v": 0.77,
+     "m": "Ese es el valor de $\\mathrm{sen}\\,B$. Falta aplicar $\\mathrm{sen}^{-1}$ para obtener el ángulo."
+    }
+   ],
+   "hint": "Plantee $\\dfrac{\\mathrm{sen}\\,B}{b}=\\dfrac{\\mathrm{sen}\\,A}{a}$ y luego use $\\mathrm{sen}^{-1}$.",
+   "sol": "$\\mathrm{sen}\\,B=\\dfrac{15\\cdot\\mathrm{sen}\\,38°}{12}\\approx 0{,}77\\Rightarrow B\\approx 50{,}32°$.",
+   "tema": "Ley de senos",
+   "fig": {
+    "f": "tri3",
+    "a": {
+     "A": [
+      30,
+      170
+     ],
+     "B": [
+      300,
+      170
+     ],
+     "C": [
+      180,
+      40
+     ],
+     "a": "12 m",
+     "b": "15 m",
+     "angA": "38°",
+     "angB": "B = ?"
+    }
+   }
+  },
+  {
+   "type": "num",
+   "stem": "En el triángulo $ABC$, $b=9$ cm, $c=14$ cm y $A=52°$. Determine el lado $a$.",
+   "ans": 11.04,
+   "tol": 0.05,
+   "unit": "cm",
+   "errs": [
+    {
+     "v": 121.85,
+     "m": "Ese es $a^2$. Falta sacar la raíz cuadrada."
+    },
+    {
+     "v": 20.79,
+     "m": "Sumó $2bc\\cos A$; en la ley de cosenos se <b>resta</b>."
+    },
+    {
+     "v": 17.83,
+     "m": "Su calculadora está en modo <b>RAD</b>. Cámbiela a <b>DEG</b> (grados) y vuelva a calcular."
+    }
+   ],
+   "hint": "Use $a^2=b^2+c^2-2bc\\cos A$.",
+   "sol": "$a^2=81+196-252\\cos 52°\\approx 121{,}85\\Rightarrow a\\approx 11{,}04$ cm.",
+   "tema": "Ley de cosenos",
+   "fig": {
+    "f": "tri3",
+    "a": {
+     "A": [
+      30,
+      170
+     ],
+     "B": [
+      310,
+      170
+     ],
+     "C": [
+      140,
+      60
+     ],
+     "a": "a = ?",
+     "b": "9 cm",
+     "c": "14 cm",
+     "angA": "52°"
+    }
+   }
+  },
+  {
+   "type": "num",
+   "stem": "Un triángulo tiene lados $a=7$, $b=9$ y $c=12$. Determine el ángulo $C$, opuesto al lado de 12.",
+   "ans": 96.38,
+   "tol": 0.05,
+   "unit": "°",
+   "errs": [
+    {
+     "v": 48.19,
+     "m": "Ese es el ángulo $B$. El ángulo $C$ es el opuesto al lado $c=12$: $\\cos C=\\dfrac{a^2+b^2-c^2}{2ab}$."
+    },
+    {
+     "v": 83.62,
+     "m": "Revise el orden: el lado opuesto al ángulo es el que se <b>resta</b> en el numerador."
+    }
+   ],
+   "hint": "Despeje: $\\cos C=\\dfrac{a^2+b^2-c^2}{2ab}$.",
+   "sol": "$\\cos C=\\dfrac{49+81-144}{2(7)(9)}=\\dfrac{-14}{126}\\approx -0{,}1111\\Rightarrow C\\approx 96{,}38°$.",
+   "tema": "Ley de cosenos",
+   "fig": {
+    "f": "tri3",
+    "a": {
+     "A": [
+      30,
+      170
+     ],
+     "B": [
+      300,
+      170
+     ],
+     "C": [
+      110,
+      60
+     ],
+     "a": "7",
+     "b": "9",
+     "c": "12",
+     "angC": "C = ?"
+    }
+   }
+  },
+  {
+   "type": "num",
+   "stem": "En el triángulo $ABC$, $A=35°$, $C=80°$ y $b=40$ cm. Determine el lado $a$.",
+   "ans": 25.31,
+   "tol": 0.05,
+   "unit": "cm",
+   "errs": [
+    {
+     "v": 23.3,
+     "m": "Usó $\\mathrm{sen}\\,80°$, pero el lado $b$ es opuesto al ángulo $B$. Primero calcule $B=180°-35°-80°$."
+    }
+   ],
+   "hint": "Primero calcule el ángulo $B$; luego use la ley de senos con el par $b$ y $B$.",
+   "sol": "$B=180°-35°-80°=65°$. $a=\\dfrac{40\\cdot\\mathrm{sen}\\,35°}{\\mathrm{sen}\\,65°}\\approx 25{,}31$ cm.",
+   "tema": "Ley de senos",
+   "fig": {
+    "f": "tri3",
+    "a": {
+     "A": [
+      30,
+      170
+     ],
+     "B": [
+      300,
+      170
+     ],
+     "C": [
+      220,
+      50
+     ],
+     "a": "a = ?",
+     "b": "40 cm",
+     "angA": "35°",
+     "angC": "80°"
+    }
+   }
+  },
+  {
+   "type": "num",
+   "stem": "Dos técnicos, en los puntos $A$ y $B$ de la misma orilla de un río, están separados 300 m. Ambos observan un poste $C$ en la otra orilla. Miden $\\angle CAB=50°$ y $\\angle CBA=62°$. ¿Cuál es la distancia de $A$ al poste?",
+   "ans": 285.69,
+   "tol": 0.06,
+   "unit": "m",
+   "errs": [
+    {
+     "v": 247.86,
+     "m": "Esa es la distancia $BC$. Para $AC$ use el ángulo opuesto a $AC$, que es el de $B$ (62°)."
+    },
+    {
+     "v": 345.78,
+     "m": "El lado de 300 m es opuesto al ángulo $C$; primero calcule $C=180°-50°-62°$."
+    }
+   ],
+   "hint": "Calcule el ángulo en $C$ y use la ley de senos con el par (300 m, $C$).",
+   "sol": "$C=180°-50°-62°=68°$. $AC=\\dfrac{300\\cdot\\mathrm{sen}\\,62°}{\\mathrm{sen}\\,68°}\\approx 285{,}69$ m.",
+   "tema": "Aplicación",
+   "sec": "3. Problemas de aplicación",
+   "fig": {
+    "f": "tri3",
+    "a": {
+     "A": [
+      30,
+      170
+     ],
+     "B": [
+      310,
+      170
+     ],
+     "C": [
+      180,
+      30
+     ],
+     "c": "300 m",
+     "b": "?",
+     "angA": "50°",
+     "angB": "62°",
+     "names": [
+      "A",
+      "B",
+      "C"
+     ]
+    }
+   }
+  },
+  {
+   "type": "num",
+   "stem": "Para medir el largo de un lago, una topógrafa se ubica en un punto $P$ desde donde ve ambos extremos. Mide 120 m hasta un extremo, 95 m hasta el otro, y el ángulo entre ambas visuales es de 75°. ¿Cuál es el largo del lago?",
+   "ans": 132.38,
+   "tol": 0.06,
+   "unit": "m",
+   "errs": [
+    {
+     "v": 17523.93,
+     "m": "Ese es el cuadrado del largo. Falta sacar la raíz cuadrada."
+    },
+    {
+     "v": 171.25,
+     "m": "Sumó $2ab\\cos C$; en la ley de cosenos se resta."
+    }
+   ],
+   "hint": "Tiene dos lados y el ángulo comprendido: use la ley de cosenos.",
+   "sol": "$L^2=120^2+95^2-2(120)(95)\\cos 75°\\approx 17523{,}93\\Rightarrow L\\approx 132{,}38$ m.",
+   "tema": "Aplicación"
+  },
+  {
+   "type": "num",
+   "stem": "Un barco sale del puerto $P$ y navega 30 km hasta el punto $A$. Luego cambia de rumbo y navega 45 km hasta el punto $B$. El ángulo en $A$, entre los dos tramos, mide 110°.<br><b>a)</b> ¿A qué distancia del puerto se encuentra el barco?",
+   "ans": 62.04,
+   "tol": 0.06,
+   "unit": "km",
+   "errs": [
+    {
+     "v": 44.74,
+     "m": "Usó 70°. El ángulo entre los dos tramos es 110°; recuerde que $\\cos 110°$ es negativo."
+    },
+    {
+     "v": 3848.45,
+     "m": "Ese es $PB^2$. Falta sacar la raíz cuadrada."
+    }
+   ],
+   "hint": "Use la ley de cosenos con los dos tramos y el ángulo de 110°.",
+   "sol": "$PB^2=30^2+45^2-2(30)(45)\\cos 110°\\approx 3848{,}45\\Rightarrow PB\\approx 62{,}04$ km.",
+   "tema": "Aplicación",
+   "fig": {
+    "f": "tri3",
+    "a": {
+     "A": [
+      120,
+      40
+     ],
+     "B": [
+      320,
+      170
+     ],
+     "C": [
+      20,
+      170
+     ],
+     "c": "45 km",
+     "a": "PB = ?",
+     "b": "30 km",
+     "angA": "110°",
+     "names": [
+      "A",
+      "B",
+      "P"
+     ]
+    }
+   }
+  },
+  {
+   "type": "num",
+   "stem": "Con la situación anterior: <b>b)</b> ¿Qué ángulo se forma en el puerto $P$, entre el primer tramo y la línea que une el puerto con el barco?",
+   "ans": 42.97,
+   "tol": 0.08,
+   "unit": "°",
+   "errs": [
+    {
+     "v": 27.03,
+     "m": "Ese es el ángulo en $B$. El ángulo en $P$ es opuesto al tramo de 45 km."
+    }
+   ],
+   "hint": "Use la ley de senos con el resultado del inciso a): $\\dfrac{\\mathrm{sen}\\,P}{45}=\\dfrac{\\mathrm{sen}\\,110°}{PB}$.",
+   "sol": "$\\mathrm{sen}\\,P=\\dfrac{45\\cdot\\mathrm{sen}\\,110°}{62{,}04}\\approx 0{,}68\\Rightarrow P\\approx 42{,}97°$.",
+   "tema": "Aplicación"
+  }
+ ]
+};
+
+window.PRACTICA.id = 2;
+startPractice(window.PRACTICA);
+</script>
+</body>
+</html>
